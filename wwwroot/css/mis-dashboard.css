@@ -1,0 +1,391 @@
+﻿/* ─────────────────────────────────────────
+   BookHive — MIS Dashboard Styles
+   ───────────────────────────────────────── */
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #F1F5F9;
+    margin: 0;
+}
+
+/* ── Layout ── */
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ── Sidebar ── */
+.sidebar {
+    width: 220px;
+    background-color: #1B2B5E;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 14px;
+    flex-shrink: 0;
+    min-height: 100vh;
+}
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 32px;
+    padding-left: 4px;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.logo-sm {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #F5C518;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 800;
+    color: #1B2B5E;
+    flex-shrink: 0;
+}
+
+/* ── Nav Items ── */
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #B0C4DE;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+    .nav-item:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+    }
+
+    .nav-item.active {
+        background-color: rgba(255, 255, 255, 0.15);
+        color: #ffffff;
+        font-weight: 700;
+    }
+
+.nav-icon {
+    font-size: 16px;
+}
+
+.nav-logout {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #90A4AE;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+    .nav-logout:hover {
+        background-color: rgba(255, 255, 255, 0.07);
+    }
+
+/* ── Main ── */
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── Header ── */
+.top-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #E2E8F0;
+    padding: 16px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.page-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1B2B5E;
+    margin: 0;
+}
+
+.page-sub {
+    font-size: 12px;
+    color: #64748B;
+    margin: 2px 0 0;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: #F5C518;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    color: #1B2B5E;
+}
+
+/* ── Content ── */
+.content {
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ── Stat Cards ── */
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+.stat-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border: 1px solid #E2E8F0;
+}
+
+.stat-icon {
+    font-size: 28px;
+}
+
+.stat-num {
+    font-size: 26px;
+    font-weight: 800;
+}
+
+    .stat-num.green {
+        color: #16A34A;
+    }
+
+    .stat-num.blue {
+        color: #2563EB;
+    }
+
+    .stat-num.navy {
+        color: #1B2B5E;
+    }
+
+    .stat-num.yellow {
+        color: #D97706;
+    }
+
+.stat-lbl {
+    font-size: 11px;
+    color: #64748B;
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+/* ── Table Card ── */
+.table-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #E2E8F0;
+    overflow: hidden;
+}
+
+.table-toolbar {
+    padding: 16px 20px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.table-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1B2B5E;
+}
+
+.toolbar-right {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.search-input {
+    padding: 7px 12px;
+    border-radius: 7px;
+    border: 1px solid #E2E8F0;
+    font-size: 12px;
+    width: 220px;
+    outline: none;
+    font-family: inherit;
+}
+
+    .search-input:focus {
+        border-color: #2563EB;
+    }
+
+.btn-add {
+    background-color: #F5C518;
+    color: #1B2B5E;
+    border: none;
+    border-radius: 7px;
+    padding: 7px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+    .btn-add:hover {
+        background-color: #E6B800;
+    }
+
+/* ── Filter Buttons ── */
+.filter-row {
+    padding: 0 20px 12px;
+    display: flex;
+    gap: 6px;
+}
+
+.filter-btn {
+    background-color: transparent;
+    border: 1px solid #E2E8F0;
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 11px;
+    cursor: pointer;
+    color: #64748B;
+    font-weight: 600;
+    font-family: inherit;
+    transition: all 0.2s;
+}
+
+    .filter-btn:hover {
+        border-color: #1B2B5E;
+        color: #1B2B5E;
+    }
+
+    .filter-btn.active {
+        background-color: #1B2B5E;
+        color: #ffffff;
+        border-color: #1B2B5E;
+    }
+
+/* ── Table ── */
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+thead tr {
+    background-color: #1B2B5E;
+}
+
+th {
+    padding: 10px 14px;
+    color: #ffffff;
+    text-align: left;
+    font-weight: 600;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+td {
+    padding: 10px 14px;
+    color: #334155;
+    border-bottom: 1px solid #F1F5F9;
+    white-space: nowrap;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+tbody tr:hover {
+    background-color: #F8FAFC;
+}
+
+/* ── Badges ── */
+.badge-student,
+.badge-librarian,
+.badge-professor,
+.badge-active,
+.badge-inactive {
+    border-radius: 20px;
+    padding: 2px 10px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.badge-student {
+    background-color: #DBEAFE;
+    color: #1D4ED8;
+}
+
+.badge-librarian {
+    background-color: #D1FAE5;
+    color: #065F46;
+}
+
+.badge-professor {
+    background-color: #FEF9C3;
+    color: #92400E;
+}
+
+.badge-active {
+    background-color: #D1FAE5;
+    color: #15803D;
+}
+
+.badge-inactive {
+    background-color: #FEE2E2;
+    color: #DC2626;
+}
+
+/* ── Manage Button ── */
+.btn-manage {
+    background-color: #2563EB;
+    color: #ffffff;
+    border-radius: 5px;
+    padding: 4px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+    .btn-manage:hover {
+        background-color: #1D4ED8;
+    }

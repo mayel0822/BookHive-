@@ -1,0 +1,170 @@
+﻿/* ─────────────────────────────────────────
+   BookHive — MIS Registration Styles
+   ───────────────────────────────────────── */
+
+/* Form Card */
+.form-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 28px 32px;
+    border: 1px solid #E2E8F0;
+    max-width: 740px;
+}
+
+/* Success Box */
+.success-box {
+    background-color: #D1FAE5;
+    border: 1px solid #6EE7B7;
+    color: #065F46;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+}
+
+.success-close {
+    background: none;
+    border: none;
+    color: #065F46;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* Role Tabs */
+.role-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.role-tab {
+    background-color: transparent;
+    border: 1.5px solid #E2E8F0;
+    border-radius: 8px;
+    padding: 8px 20px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #64748B;
+    font-weight: 600;
+    font-family: inherit;
+    transition: all 0.2s;
+}
+
+    .role-tab:hover {
+        border-color: #1B2B5E;
+        color: #1B2B5E;
+    }
+
+    .role-tab.active {
+        background-color: #1B2B5E;
+        color: #ffffff;
+        border-color: #1B2B5E;
+    }
+
+/* Form Section Title */
+.form-section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1B2B5E;
+    margin-bottom: 4px;
+}
+
+.form-section-sub {
+    font-size: 13px;
+    color: #64748B;
+    margin-bottom: 20px;
+}
+
+/* Form Grid */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 20px;
+}
+
+/* Form Group */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 8px;
+}
+
+    .form-group label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #1B2B5E;
+        margin-bottom: 5px;
+    }
+
+/* Form Input */
+.form-input {
+    width: 100%;
+    padding: 9px 12px;
+    border-radius: 8px;
+    border: 1.5px solid #CBD5E1;
+    font-size: 13px;
+    outline: none;
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+    background-color: #ffffff;
+}
+
+    .form-input:focus {
+        border-color: #2563EB;
+    }
+
+    .form-input.input-error {
+        border-color: #DC2626;
+    }
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.btn-cancel {
+    background-color: transparent;
+    border: 1.5px solid #E2E8F0;
+    border-radius: 8px;
+    padding: 9px 24px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #64748B;
+    font-weight: 600;
+    text-decoration: none;
+    font-family: inherit;
+}
+
+    .btn-cancel:hover {
+        border-color: #94A3B8;
+    }
+
+.btn-register {
+    background-color: #1B2B5E;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 9px 28px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background-color 0.2s;
+}
+
+    .btn-register:hover {
+        background-color: #162347;
+    }
+
+/* Hidden */
+.hidden {
+    display: none;
+}

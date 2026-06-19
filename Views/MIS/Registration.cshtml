@@ -1,0 +1,288 @@
+﻿@{
+    ViewData["Title"] = "MIS Registration";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BookHive - MIS Registration</title>
+    <link rel="stylesheet" href="~/css/output.css" />
+</head>
+<body class="bg-slate-100 font-sans m-0">
+
+    <div class="flex min-h-screen">
+
+        @* Sidebar *@
+        <aside class="w-[220px] bg-[#1B2B5E] flex flex-col p-3.5 flex-shrink-0 min-h-screen">
+            <div class="flex items-center gap-2.5 mb-8 pl-1 text-white text-lg font-extrabold">
+                <div class="w-9 h-9 rounded-full bg-[#F5C518] flex items-center justify-center text-[15px] font-extrabold text-[#1B2B5E] flex-shrink-0">
+                    B
+                </div>
+                <span>BookHive</span>
+            </div>
+            <nav class="flex flex-col gap-1 flex-1">
+                <a href="/MIS/Dashboard"
+                   class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] font-medium text-[#B0C4DE] hover:bg-white/10 hover:text-white transition-colors">
+                    <span class="text-base">&#127968;</span> Dashboard
+                </a>
+                <a href="/MIS/Registration"
+                   class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] font-bold text-white bg-white/15">
+                    <span class="text-base">&#43;</span> Registration
+                </a>
+                <a href="/MIS/UserInfo"
+                   class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] font-medium text-[#B0C4DE] hover:bg-white/10 hover:text-white transition-colors">
+                    <span class="text-base">&#128100;</span> User Information
+                </a>
+            </nav>
+            <a href="/MIS/Logout"
+               class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] text-[#90A4AE] hover:bg-white/[0.07] transition-colors">
+                &#128682; Logout
+            </a>
+        </aside>
+
+        @* Main *@
+        <div class="flex-1 flex flex-col">
+
+            @* Header *@
+            <header class="bg-white border-b border-slate-200 px-7 py-4 flex justify-between items-center flex-shrink-0">
+                <div>
+                    <h1 class="text-xl font-bold text-[#1B2B5E] m-0">User Registration</h1>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        MIS Facilitator Portal STI San Jose Del Monte
+                    </p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="w-[38px] h-[38px] rounded-full bg-[#F5C518] flex items-center justify-center text-[13px] font-extrabold text-[#1B2B5E]">
+                        MF
+                    </span>
+                </div>
+            </header>
+
+            @* Content *@
+            <main class="p-7">
+                <div class="bg-white rounded-xl px-8 py-7 border border-slate-200 max-w-[740px]">
+
+                    @* Error Message *@
+                    @if (ViewBag.Error != null)
+                    {
+                        <div id="errorBox"
+                             class="bg-red-50 border border-red-300 text-red-600 rounded-lg px-3.5 py-2.5 text-[13px] mb-4 font-semibold">
+                            ⚠️ @ViewBag.Error
+                        </div>
+                    }
+
+                    @* Success Message *@
+                    @if (ViewBag.Success != null)
+                    {
+                        <div id="successBox"
+                             class="bg-green-50 border border-green-300 text-green-800 rounded-lg px-3.5 py-2.5 text-[13px] mb-5 flex justify-between items-center font-semibold">
+                            <span>&#9989; @ViewBag.Success</span>
+                            <button onclick="dismissSuccess()"
+                                    class="bg-transparent border-none text-green-800 cursor-pointer text-sm">
+                                &#10005;
+                            </button>
+                        </div>
+                    }
+
+                    @* Role Tabs *@
+                    <div class="flex gap-2 mb-6">
+                        <button id="tab-Student"
+                                onclick="switchTab('Student')"
+                                class="role-tab bg-[#1B2B5E] text-white border border-[#1B2B5E] rounded-lg px-5 py-2 text-[13px] font-semibold">
+                            Student
+                        </button>
+                        <button id="tab-Professor"
+                                onclick="switchTab('Professor')"
+                                class="role-tab bg-transparent border border-slate-200 rounded-lg px-5 py-2 text-[13px] font-semibold text-slate-500 hover:border-[#1B2B5E] hover:text-[#1B2B5E] transition-colors">
+                            Professor
+                        </button>
+                        <button id="tab-Librarian"
+                                onclick="switchTab('Librarian')"
+                                class="role-tab bg-transparent border border-slate-200 rounded-lg px-5 py-2 text-[13px] font-semibold text-slate-500 hover:border-[#1B2B5E] hover:text-[#1B2B5E] transition-colors">
+                            Librarian
+                        </button>
+                    </div>
+
+                    @* Form *@
+                    <form method="post"
+                          action="/MIS/Registration"
+                          id="regForm">
+                        @Html.AntiForgeryToken()
+
+                        @* Hidden role field *@
+                        <input type="hidden"
+                               id="roleField"
+                               name="role"
+                               value="Student" />
+
+                        <h3 id="formTitle" class="text-lg font-bold text-[#1B2B5E] mb-1">
+                            Student Registration
+                        </h3>
+                        <p class="text-[13px] text-slate-500 mb-5">
+                            Fill in all required fields marked with *
+                        </p>
+
+                        @* STUDENT FIELDS *@
+                        <div id="fields-Student">
+                            <div class="grid grid-cols-2 gap-x-5 gap-y-2">
+                                <div class="flex flex-col mb-2">
+                                    <label class="text-xs font-semibold text-[#1B2B5E] mb-1.5">Student ID *</label>
+                                    <input type="text"
+                                           name="studId"
+                                           placeholder="2024-0001"
+                                           class="form-input w-full px-3 py-2.5 rounded-lg border border-slate-300 text-[13px] outline-none transition-colors focus:border-blue-600" />
+                                </div>
+                                <div class="flex flex-col mb-2">
+                                    <label class="text-xs font-semibold text-[#1B2B5E] mb-1.5">RFID Card No.</label>
+                                    <input type="text"
+                                           name="rfid"
+                                           placeholder="Tap or enter RFID"
+                                           class="form-input w-full px-3 py-2.5 rounded-lg border border-slate-300 text-[13px] outline-none transition-colors focus:border-blue-600" />
+                                </div>
+                                <div class="flex flex-col mb-2">
+                                    <label class="text-xs font-semibold text-[#1B2B5E] mb-1.5">Last Name *</label>
+                                    <input type="text"
+                                           name="lastName"
+                                           placeholder="Dela Cruz"
+                                           class="form-input w-full px-3 py-2.5 rounded-lg border border-slate-300 text-[13px] outline-none transition-colors focus:border-blue-600" />
+                                </div>
+                                <div class="flex flex-col mb-2">
+                                    <label class="text-xs font-semibold text-[#1B2B5E] mb-1.5">First Name *</label>
+                                    <input type="text"
+                                           name="firstName"
+                                           placeholder="Maria"
+                                           class="form-input w-full px-3 py-2.5 rounded-lg border border-slate-300 text-[13px] outline-none transition-colors focus:border-blue-600" />
+                                </div>
+                                <div class="flex flex-col mb-2">
+                                    <label class="text-xs font-semibold text-[#1B2B5E] mb-1.5">Email Address *</label>
+                                    <input type="email"
+                                           name="email"
+                                           placeholder="user@sti.edu.ph"
+                                           class="form-input w-full px-3 py-2.5 rounded-lg border border-slate-300 text-[13px] outline-none transition-colors focus:border-blue-600" />
+                                </div>
+                                <div class="flex flex-col mb-2">
+                                    <label class="text-xs font-semibold text-[#1B2B5E] mb-1.5">Phone Number *</label>
+                                    <input type="tel"
+                                           name="phone"
+                                           placeholder="09XXXXXXXXX"
+                                           maxlength="11"
+                                           class="form-input w-full px-3 py-2.5 rounded-lg border border-slate-300 text-[13px] outline-none transition-colors focus:border-blue-600" />
+                                </div>
+                            </div>
+                        </div>
+
+                        @* PROFESSOR FIELDS *@
+                        <div id="fields-Professor" class="hidden">
+                            <div class="grid grid-cols-2 gap-x-5 gap-y-2">
+                                <div class="flex flex-col mb-2">
+                                    <label class="text-xs font-semibold text-[#1B2B5E] mb-1.5">Employee ID *</label>
+                                    <input type="text"
+                                           name="empId"
+                                           placeholder="PROF-001"
+                                           class="form-input w-full px-3 py-2.5 rounded-lg border border-slate-300 text-[13px] outline-none transition-colors focus:border-blue-600" />
+                                </div>
+                                <div class="flex flex-col mb-2">
+                                    <label class="text-xs font-semibold text-[#1B2B5E] mb-1.5">Last Name *</label>
+                                    <input type="text"
+                                           name="lastName"
+                                           placeholder="Dela Cruz"
+                                           class="form-input w-full px-3 py-2.5 rounded-lg border border-slate-300 text-[13px] outline-none transition-colors focus:border-blue-600" />
+                                </div>
+                                <div class="flex flex-col mb-2">
+                                    <label class="text-xs font-semibold text-[#1B2B5E] mb-1.5">First Name *</label>
+                                    <input type="text"
+                                           name="firstName"
+                                           placeholder="Maria"
+                                           class="form-input w-full px-3 py-2.5 rounded-lg border border-slate-300 text-[13px] outline-none transition-colors focus:border-blue-600" />
+                                </div>
+                                <div class="flex flex-col mb-2">
+                                    <label class="text-xs font-semibold text-[#1B2B5E] mb-1.5">Email Address *</label>
+                                    <input type="email"
+                                           name="email"
+                                           placeholder="prof@sti.edu.ph"
+                                           class="form-input w-full px-3 py-2.5 rounded-lg border border-slate-300 text-[13px] outline-none transition-colors focus:border-blue-600" />
+                                </div>
+                                <div class="flex flex-col mb-2">
+                                    <label class="text-xs font-semibold text-[#1B2B5E] mb-1.5">Phone Number *</label>
+                                    <input type="tel"
+                                           name="phone"
+                                           placeholder="09XXXXXXXXX"
+                                           maxlength="11"
+                                           class="form-input w-full px-3 py-2.5 rounded-lg border border-slate-300 text-[13px] outline-none transition-colors focus:border-blue-600" />
+                                </div>
+                                <div class="flex flex-col mb-2">
+                                    <label class="text-xs font-semibold text-[#1B2B5E] mb-1.5">Department *</label>
+                                    <input type="text"
+                                           name="department"
+                                           placeholder="ICT Department"
+                                           class="form-input w-full px-3 py-2.5 rounded-lg border border-slate-300 text-[13px] outline-none transition-colors focus:border-blue-600" />
+                                </div>
+                            </div>
+                        </div>
+
+                        @* LIBRARIAN FIELDS *@
+                        <div id="fields-Librarian" class="hidden">
+                            <div class="grid grid-cols-2 gap-x-5 gap-y-2">
+                                <div class="flex flex-col mb-2">
+                                    <label class="text-xs font-semibold text-[#1B2B5E] mb-1.5">Employee ID *</label>
+                                    <input type="text"
+                                           name="empId"
+                                           placeholder="EMP-001"
+                                           class="form-input w-full px-3 py-2.5 rounded-lg border border-slate-300 text-[13px] outline-none transition-colors focus:border-blue-600" />
+                                </div>
+                                <div class="flex flex-col mb-2">
+                                    <label class="text-xs font-semibold text-[#1B2B5E] mb-1.5">Last Name *</label>
+                                    <input type="text"
+                                           name="lastName"
+                                           placeholder="Dela Cruz"
+                                           class="form-input w-full px-3 py-2.5 rounded-lg border border-slate-300 text-[13px] outline-none transition-colors focus:border-blue-600" />
+                                </div>
+                                <div class="flex flex-col mb-2">
+                                    <label class="text-xs font-semibold text-[#1B2B5E] mb-1.5">First Name *</label>
+                                    <input type="text"
+                                           name="firstName"
+                                           placeholder="Maria"
+                                           class="form-input w-full px-3 py-2.5 rounded-lg border border-slate-300 text-[13px] outline-none transition-colors focus:border-blue-600" />
+                                </div>
+                                <div class="flex flex-col mb-2">
+                                    <label class="text-xs font-semibold text-[#1B2B5E] mb-1.5">Email Address *</label>
+                                    <input type="email"
+                                           name="email"
+                                           placeholder="lib@sti.edu.ph"
+                                           class="form-input w-full px-3 py-2.5 rounded-lg border border-slate-300 text-[13px] outline-none transition-colors focus:border-blue-600" />
+                                </div>
+                                <div class="flex flex-col mb-2">
+                                    <label class="text-xs font-semibold text-[#1B2B5E] mb-1.5">Phone Number *</label>
+                                    <input type="tel"
+                                           name="phone"
+                                           placeholder="09XXXXXXXXX"
+                                           maxlength="11"
+                                           class="form-input w-full px-3 py-2.5 rounded-lg border border-slate-300 text-[13px] outline-none transition-colors focus:border-blue-600" />
+                                </div>
+                            </div>
+                        </div>
+
+                        @* Form Actions *@
+                        <div class="flex justify-end gap-3 mt-6">
+                            <a href="/MIS/Dashboard"
+                               class="bg-transparent border border-slate-200 rounded-lg px-6 py-2.5 text-[13px] cursor-pointer text-slate-500 font-semibold no-underline hover:border-slate-400 transition-colors">
+                                Cancel
+                            </a>
+                            <button type="submit"
+                                    class="bg-[#1B2B5E] text-white border-none rounded-lg px-7 py-2.5 text-[13px] font-bold cursor-pointer hover:bg-[#162347] transition-colors">
+                                Register
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="~/js/mis-registration.js"></script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+﻿/* ─────────────────────────────────────────
+   BookHive — MIS Login Page Styles
+   ───────────────────────────────────────── */
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.left-panel {
+    flex: 1;
+    background-color: #1B2B5E;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 40px;
+    color: #ffffff;
+}
+
+.logo-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #F5C518;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: 800;
+    color: #1B2B5E;
+    margin-bottom: 20px;
+}
+
+.brand-title {
+    font-size: 36px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+}
+
+.brand-sub {
+    font-size: 11px;
+    color: #F5C518;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+}
+
+.brand-desc {
+    font-size: 14px;
+    color: #B0BEC5;
+    text-align: center;
+    max-width: 260px;
+    line-height: 1.7;
+}
+
+.right-panel {
+    flex: 1;
+    background-color: #F1F5F9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+}
+
+.login-card {
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 40px 36px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+.card-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1B2B5E;
+    margin-bottom: 4px;
+}
+
+.card-sub {
+    font-size: 14px;
+    color: #64748B;
+    margin-bottom: 24px;
+}
+
+.error-box {
+    background-color: #FEF2F2;
+    border: 1px solid #FCA5A5;
+    color: #DC2626;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.error-close {
+    background: none;
+    border: none;
+    color: #DC2626;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0 4px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+}
+
+    .form-group label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #1B2B5E;
+        margin-bottom: 6px;
+    }
+
+.form-input {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1.5px solid #CBD5E1;
+    font-size: 14px;
+    outline: none;
+    font-family: inherit;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+
+    .form-input:focus {
+        border-color: #2563EB;
+    }
+
+    .form-input.input-error {
+        border-color: #DC2626;
+    }
+
+.password-wrap {
+    position: relative;
+}
+
+    .password-wrap .form-input {
+        padding-right: 44px;
+    }
+
+.toggle-pass {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px;
+    color: #64748B;
+}
+
+.field-error {
+    font-size: 11px;
+    color: #DC2626;
+    margin-top: 4px;
+    min-height: 16px;
+}
+
+.btn-login {
+    width: 100%;
+    background-color: #1B2B5E;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background-color 0.2s;
+    font-family: inherit;
+}
+
+    .btn-login:hover {
+        background-color: #162347;
+    }
+
+    .btn-login:disabled {
+        background-color: #94A3B8;
+        cursor: not-allowed;
+    }
+
+.demo-hint {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 12px;
+    color: #94A3B8;
+    line-height: 1.8;
+}
+
+.hidden {
+    display: none;
+}

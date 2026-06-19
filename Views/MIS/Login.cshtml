@@ -1,0 +1,110 @@
+﻿@{
+    ViewData["Title"] = "MIS Login";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BookHive – MIS Login</title>
+    <link rel="stylesheet" href="~/css/output.css" />
+</head>
+<body class="min-h-screen flex font-sans">
+
+    <!-- Left Panel -->
+    <div class="flex-1 bg-[#1B2B5E] flex flex-col items-center justify-center px-10 py-12 text-white">
+        <div class="w-20 h-20 rounded-full bg-[#F5C518] flex items-center justify-center text-[32px] font-extrabold text-[#1B2B5E] mb-5">
+            B
+        </div>
+        <h1 class="text-4xl font-extrabold mb-1.5 tracking-wide">BookHive</h1>
+        <p class="text-[11px] text-[#F5C518] font-semibold tracking-[2px] mb-4">MIS FACILITATOR PORTAL</p>
+        <p class="text-sm text-[#B0BEC5] text-center max-w-[260px] leading-relaxed">
+            Manage accounts and system access for
+            STI San Jose Del Monte Library.
+        </p>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="flex-1 bg-slate-100 flex items-center justify-center p-8">
+        <div class="bg-white rounded-2xl px-9 py-10 w-full max-w-[400px] shadow-[0_4px_24px_rgba(0,0,0,0.08)]">
+
+            <!-- Card Header -->
+            <h2 class="text-2xl font-bold text-[#1B2B5E] mb-1">Welcome, Admin</h2>
+            <p class="text-sm text-slate-500 mb-6">Sign in to your MIS account</p>
+
+            <!-- Error Message -->
+            @if (ViewBag.Error != null)
+            {
+                <div id="errorBox"
+                     class="bg-red-50 border border-red-300 text-red-600 rounded-lg px-3.5 py-2.5 text-[13px] mb-4 flex justify-between items-center">
+                    <span>⚠️ @ViewBag.Error</span>
+                    <button onclick="dismissError()"
+                            class="bg-transparent border-none text-red-600 cursor-pointer text-sm px-1">
+                        ✕
+                    </button>
+                </div>
+            }
+
+            <!-- Login Form -->
+            <form method="post" action="/MIS/Login" id="loginForm" class="flex flex-col">
+                @Html.AntiForgeryToken()
+
+                <!-- Email -->
+                <div class="flex flex-col mb-4">
+                    <label for="email" class="text-[13px] font-semibold text-[#1B2B5E] mb-1.5">Email Address</label>
+                    <input type="email"
+                           id="email"
+                           name="email"
+                           placeholder="mis@sti.edu.ph"
+                           required
+                           autocomplete="username"
+                           class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm outline-none transition-colors focus:border-blue-600" />
+                    <span id="emailError" class="text-[11px] text-red-600 mt-1 min-h-[16px]"></span>
+                </div>
+
+                <!-- Password -->
+                <div class="flex flex-col mb-4">
+                    <label for="password" class="text-[13px] font-semibold text-[#1B2B5E] mb-1.5">Password</label>
+                    <div class="relative">
+                        <input type="password"
+                               id="password"
+                               name="password"
+                               placeholder="••••••••••••"
+                               required
+                               maxlength="20"
+                               autocomplete="current-password"
+                               class="w-full px-3.5 py-2.5 pr-11 rounded-lg border border-slate-300 text-sm outline-none transition-colors focus:border-blue-600" />
+                        <button type="button"
+                                id="togglePassword"
+                                aria-label="Toggle password visibility"
+                                class="absolute right-2.5 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-base p-1 text-slate-500">
+                            👁️
+                        </button>
+                    </div>
+                    <span id="passwordError" class="text-[11px] text-red-600 mt-1 min-h-[16px]"></span>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit"
+                        id="loginBtn"
+                        class="w-full bg-[#1B2B5E] text-white border-none rounded-lg py-3 text-[15px] font-bold cursor-pointer mt-2 transition-colors hover:bg-[#162347] disabled:bg-slate-400 disabled:cursor-not-allowed">
+                    <span id="btnText">Log In</span>
+                    <span id="btnLoader" class="hidden">Signing in…</span>
+                </button>
+            </form>
+
+            <!-- Demo Credentials -->
+            <div class="mt-5 text-center text-xs text-slate-400 leading-relaxed">
+                <p>Demo credentials:</p>
+                <p>
+                    <strong>mis@sti.edu.ph</strong> /
+                    <strong>Admin@123</strong>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/js/mis-login.js"></script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+﻿@model List<BookHive.Models.User>
+@{
+    ViewData["Title"] = "Archived Users";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BookHive - Archived Users</title>
+    <link rel="stylesheet" href="~/css/output.css" />
+</head>
+<body class="bg-slate-100 font-sans m-0">
+
+    <div class="flex min-h-screen">
+
+        @* Sidebar *@
+        <aside class="w-[220px] bg-[#1B2B5E] flex flex-col p-3.5 flex-shrink-0 min-h-screen">
+            <div class="flex items-center gap-2.5 mb-8 pl-1 text-white text-lg font-extrabold">
+                <div class="w-9 h-9 rounded-full bg-[#F5C518] flex items-center justify-center text-[15px] font-extrabold text-[#1B2B5E] flex-shrink-0">
+                    B
+                </div>
+                <span>BookHive</span>
+            </div>
+            <nav class="flex flex-col gap-1 flex-1">
+                <a href="/MIS/Dashboard"
+                   class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] font-medium text-[#B0C4DE] hover:bg-white/10 hover:text-white transition-colors">
+                    <span class="text-base">&#127968;</span> Dashboard
+                </a>
+                <a href="/MIS/Registration"
+                   class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] font-medium text-[#B0C4DE] hover:bg-white/10 hover:text-white transition-colors">
+                    <span class="text-base">&#43;</span> Registration
+                </a>
+                <a href="/MIS/UserInfo"
+                   class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] font-medium text-[#B0C4DE] hover:bg-white/10 hover:text-white transition-colors">
+                    <span class="text-base">&#128100;</span> User Information
+                </a>
+                <a href="/MIS/ArchivedUsers"
+                   class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] font-bold text-white bg-white/15">
+                    <span class="text-base">&#128452;</span> Archived Users
+                </a>
+            </nav>
+            <a href="/MIS/Logout"
+               class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] text-[#90A4AE] hover:bg-white/[0.07] transition-colors">
+                &#128682; Logout
+            </a>
+        </aside>
+
+        @* Main *@
+        <div class="flex-1 flex flex-col">
+
+            @* Header *@
+            <header class="bg-white border-b border-slate-200 px-7 py-4 flex justify-between items-center flex-shrink-0">
+                <div>
+                    <h1 class="text-xl font-bold text-[#1B2B5E] m-0">Archived Users</h1>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        MIS Facilitator Portal STI San Jose Del Monte
+                    </p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="w-[38px] h-[38px] rounded-full bg-[#F5C518] flex items-center justify-center text-[13px] font-extrabold text-[#1B2B5E]">
+                        MF
+                    </span>
+                </div>
+            </header>
+
+            @* Content *@
+            <main class="p-7">
+
+                <div class="bg-white rounded-[10px] border border-slate-200 overflow-hidden">
+
+                    <div class="px-5 pt-4 pb-3">
+                        <span class="text-base font-bold text-[#1B2B5E]">Archived Accounts</span>
+                        <p class="text-xs text-slate-500 mt-1">
+                            These accounts have been deactivated and removed from the active user list.
+                        </p>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-[#1B2B5E]">
+                                    <th class="px-3.5 py-2.5 text-white text-left font-semibold text-[11px] whitespace-nowrap">ID / Emp. No.</th>
+                                    <th class="px-3.5 py-2.5 text-white text-left font-semibold text-[11px] whitespace-nowrap">Last Name</th>
+                                    <th class="px-3.5 py-2.5 text-white text-left font-semibold text-[11px] whitespace-nowrap">First Name</th>
+                                    <th class="px-3.5 py-2.5 text-white text-left font-semibold text-[11px] whitespace-nowrap">Role</th>
+                                    <th class="px-3.5 py-2.5 text-white text-left font-semibold text-[11px] whitespace-nowrap">Email</th>
+                                    <th class="px-3.5 py-2.5 text-white text-center font-semibold text-[11px] whitespace-nowrap">Restore</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.Count == 0)
+                                {
+                                    <tr>
+                                        <td colspan="6" class="px-3.5 py-6 text-center text-slate-400 text-[13px]">
+                                            No archived accounts.
+                                        </td>
+                                    </tr>
+                                }
+                                @foreach (var user in Model)
+                                {
+                                    <tr class="even:bg-slate-50 hover:bg-slate-50 border-b border-slate-100 last:border-b-0">
+                                        <td class="px-3.5 py-2.5 text-slate-700 whitespace-nowrap">@(user.StudId ?? user.EmpId)</td>
+                                        <td class="px-3.5 py-2.5 text-slate-700">@user.LastName</td>
+                                        <td class="px-3.5 py-2.5 text-slate-700">@user.FirstName</td>
+                                        <td class="px-3.5 py-2.5 text-slate-700">@user.Role</td>
+                                        <td class="px-3.5 py-2.5 text-slate-700 whitespace-nowrap">@user.Email</td>
+                                        <td class="px-3.5 py-2.5 text-center">
+                                            <form method="post" action="/MIS/RestoreUser" class="inline">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@user.Id" />
+                                                <button type="submit"
+                                                        class="bg-green-600 text-white border-none rounded-md px-3 py-1.5 text-[11px] font-semibold cursor-pointer hover:opacity-90 transition-opacity">
+                                                    Restore
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+</body>
+</html>
