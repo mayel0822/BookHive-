@@ -1,19 +1,23 @@
 ﻿using BookHive.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ── Add Services ───────────────────────────
+// ── Add Controllers ─────────────────────────
 builder.Services.AddControllersWithViews();
 
-// ── Add Database ───────────────────────────
+// ── Add Razor Pages (needed for Identity UI) 
+builder.Services.AddRazorPages();
+
+// ── Add Database ────────────────────────────
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("BookHiveDB")
     )
 );
 
-// ── Add Session ────────────────────────────
+// ── Add Session ─────────────────────────────
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -21,9 +25,26 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+// ── Add Microsoft Identity ──────────────────
+builder.Services.AddMicrosoftIdentityWebAppAuthentication(
+    builder.Configuration, "AzureAd")
+    .EnableTokenAcquisitionToCallDownstreamApi()
+    .AddInMemoryTokenCaches();
+
+builder.Services.Configure<Microsoft.AspNetCore.Authentication.OpenIdConnect.OpenIdConnectOptions>(
+    "OpenIdConnect", options =>
+    {
+        options.Events.OnRedirectToIdentityProvider = context =>
+        {
+            if (context.Properties.Items.TryGetValue("prompt", out var prompt))
+                context.ProtocolMessage.Prompt = prompt;
+            return Task.CompletedTask;
+        };
+    });
+
 var app = builder.Build();
 
-// ── Configure Pipeline ─────────────────────
+// ── Configure Pipeline ──────────────────────
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -33,8 +54,10 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseRouting();
 app.UseSession();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapStaticAssets();
+app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",

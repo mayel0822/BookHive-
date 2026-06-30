@@ -33,14 +33,22 @@
                    class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] font-medium text-[#B0C4DE] hover:bg-white/10 hover:text-white transition-colors">
                     <span class="text-base">&#43;</span> Registration
                 </a>
-                <a href="/MIS/UserInfo"
-                   class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] font-bold text-white bg-white/15">
-                    <span class="text-base">&#128100;</span> User Information
-                </a>
-                <a href="/MIS/ArchivedUsers"
-                   class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] font-medium text-[#B0C4DE] hover:bg-white/10 hover:text-white transition-colors">
-                    <span class="text-base">&#128452;</span> Archived Users
-                </a>
+                <div>
+                    <div class="flex items-center rounded-lg bg-white/15">
+                        <a href="/MIS/UserInfo" style="color:#fff;text-decoration:none;display:flex;align-items:center;gap:10px;flex:1;padding:10px 12px;font-size:13px;font-weight:700;">
+                            <span style="font-size:15px;">&#128100;</span> User Information
+                        </a>
+                        <button onclick="toggleUserMenu()" style="background:none;border:none;cursor:pointer;color:#fff;padding:10px 8px;">
+                            <svg id="userMenuArrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 0.2s;display:block;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </button>
+                    </div>
+                    <div id="userSubMenu" style="display:none" class="flex flex-col mt-0.5 pl-4">
+                        <a href="/MIS/ArchivedUsers"
+                           class="flex items-center gap-2 px-3 py-2 rounded-lg text-[12px] font-medium text-[#B0C4DE] hover:bg-white/10 hover:text-white transition-colors">
+                            <span>&#128452;</span> Archived Users
+                        </a>
+                    </div>
+                </div>
             </nav>
             <a href="/MIS/Logout"
                class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] text-[#90A4AE] hover:bg-white/[0.07] transition-colors">
@@ -295,5 +303,14 @@
     </div>
 
     <script src="~/js/mis-userinfo.js"></script>
+    <script>
+        function toggleUserMenu() {
+            const menu = document.getElementById('userSubMenu');
+            const arrow = document.getElementById('userMenuArrow');
+            const isHidden = menu.style.display === 'none';
+            menu.style.display = isHidden ? 'flex' : 'none';
+            arrow.style.transform = isHidden ? 'rotate(180deg)' : '';
+        }
+    </script>
 </body>
 </html>

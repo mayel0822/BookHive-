@@ -7,7 +7,6 @@ function switchTab(role) {
     // Hide all field groups
     document.getElementById('fields-Student').classList.add('hidden');
     document.getElementById('fields-Professor').classList.add('hidden');
-    document.getElementById('fields-Librarian').classList.add('hidden');
 
     // Reset all tabs to inactive style
     document.querySelectorAll('.role-tab').forEach(function (tab) {
@@ -30,8 +29,7 @@ function switchTab(role) {
     const titles = {
         Student: 'Student Registration',
         Professor: 'Professor Registration',
-        Librarian: 'Librarian Registration'
-    };
+};
     document.getElementById('formTitle').textContent = titles[role];
 }
 

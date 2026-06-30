@@ -339,7 +339,6 @@ tbody tr:hover {
 
 /* ── Badges ── */
 .badge-student,
-.badge-librarian,
 .badge-professor,
 .badge-active,
 .badge-inactive {
@@ -352,11 +351,6 @@ tbody tr:hover {
 .badge-student {
     background-color: #DBEAFE;
     color: #1D4ED8;
-}
-
-.badge-librarian {
-    background-color: #D1FAE5;
-    color: #065F46;
 }
 
 .badge-professor {

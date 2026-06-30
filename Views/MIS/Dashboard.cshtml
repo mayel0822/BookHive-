@@ -83,14 +83,7 @@
                             <div class="text-[11px] text-slate-500 font-semibold mt-0.5">Total Registered</div>
                         </div>
                     </div>
-                    <div class="bg-white rounded-[10px] p-4.5 px-5 flex items-center gap-3.5 border border-slate-200 border-t-[3px] border-t-[#1B2B5E]">
-                        <span class="text-[28px]">&#128218;</span>
-                        <div>
-                            <div class="text-[26px] font-extrabold text-[#1B2B5E]">@ViewBag.Librarians</div>
-                            <div class="text-[11px] text-slate-500 font-semibold mt-0.5">Librarians</div>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-[10px] p-4.5 px-5 flex items-center gap-3.5 border border-slate-200 border-t-[3px] border-t-amber-600">
+<div class="bg-white rounded-[10px] p-4.5 px-5 flex items-center gap-3.5 border border-slate-200 border-t-[3px] border-t-amber-600">
                         <span class="text-[28px]">&#127891;</span>
                         <div>
                             <div class="text-[26px] font-extrabold text-amber-600">@ViewBag.Students</div>
@@ -128,11 +121,7 @@
                                 class="filter-btn bg-transparent border border-slate-200 rounded-full px-3.5 py-1 text-[11px] font-semibold text-slate-500 hover:border-[#1B2B5E] hover:text-[#1B2B5E] transition-colors">
                             Student
                         </button>
-                        <button onclick="filterRole(this, 'Librarian')"
-                                class="filter-btn bg-transparent border border-slate-200 rounded-full px-3.5 py-1 text-[11px] font-semibold text-slate-500 hover:border-[#1B2B5E] hover:text-[#1B2B5E] transition-colors">
-                            Librarian
-                        </button>
-                        <button onclick="filterRole(this, 'Professor')"
+<button onclick="filterRole(this, 'Professor')"
                                 class="filter-btn bg-transparent border border-slate-200 rounded-full px-3.5 py-1 text-[11px] font-semibold text-slate-500 hover:border-[#1B2B5E] hover:text-[#1B2B5E] transition-colors">
                             Professor
                         </button>
@@ -161,7 +150,6 @@
                                         <td class="px-3.5 py-2.5">
                                             @{
                                                 var roleBg = user.Role == "Student" ? "bg-blue-100 text-blue-700"
-                                                : user.Role == "Librarian" ? "bg-emerald-100 text-emerald-800"
                                                 : "bg-amber-100 text-amber-800";
                                             }
                                             <span class="@roleBg rounded-full px-2.5 py-0.5 text-[11px] font-semibold">@user.Role</span>

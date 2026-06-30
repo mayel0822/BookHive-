@@ -1,9 +1,12 @@
-﻿using BookHive.Models;
+﻿using BookHive.Filters;
+using BookHive.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookHive.Controllers
 {
+    [RequireMISLogin]
     public class MISController : Controller
     {
         private readonly AppDbContext _db;
@@ -14,45 +17,59 @@ namespace BookHive.Controllers
         }
 
         // ── LOGIN ──────────────────────────────────
+        [AllowMISAnonymous]
         public IActionResult Login()
         {
             if (HttpContext.Session.GetString("MISUser") != null)
                 return RedirectToAction("Dashboard");
+
             return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Login(string email, string password)
-        {
-            var facilitator = await _db.MISFacilitators
-                .FirstOrDefaultAsync(f => f.Email == email && f.Password == password);
 
-            if (facilitator != null)
+        // ── MICROSOFT LOGIN CALLBACK ────────────────
+        [AllowMISAnonymous]
+        public async Task<IActionResult> MicrosoftLogin()
+        {
+            if (User.Identity != null && User.Identity.IsAuthenticated)
             {
+                var email = User.FindFirst("preferred_username")?.Value
+                            ?? User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value
+                            ?? User.Identity.Name ?? "";
+
+                var facilitator = await _db.MISFacilitators
+                    .FirstOrDefaultAsync(f => f.Email == email);
+
+                if (facilitator == null)
+                {
+                    await HttpContext.SignOutAsync("Cookies");
+                    await HttpContext.SignOutAsync("OpenIdConnect");
+                    ViewBag.Error = $"Access denied. '{email}' is not a registered MIS facilitator.";
+                    return View("Login");
+                }
+
                 HttpContext.Session.SetString("MISUser", email);
                 HttpContext.Session.SetString("MISName",
                     $"{facilitator.FirstName} {facilitator.LastName}");
                 return RedirectToAction("Dashboard");
             }
 
-            ViewBag.Error = "Invalid email or password.";
-            return View();
+            var props = new AuthenticationProperties { RedirectUri = "/MIS/MicrosoftLogin" };
+            props.Items["prompt"] = "login";
+            return Challenge(props, "OpenIdConnect");
         }
 
         // ── DASHBOARD ──────────────────────────────
         public async Task<IActionResult> Dashboard()
         {
-            if (HttpContext.Session.GetString("MISUser") == null)
-                return RedirectToAction("Login");
-
             var allUsers = await _db.Users.ToListAsync();
 
-            // Only count users that are NOT archived
-            var visibleUsers = allUsers.Where(u => u.Status != "Archived").ToList();
+            var visibleUsers = allUsers
+                .Where(u => u.Status != "Archived")
+                .ToList();
 
             ViewBag.TotalUsers = visibleUsers.Count;
             ViewBag.ActiveUsers = visibleUsers.Count(u => u.Status == "Active");
-            ViewBag.Librarians = visibleUsers.Count(u => u.Role == "Librarian");
             ViewBag.Students = visibleUsers.Count(u => u.Role == "Student");
             ViewBag.Users = visibleUsers;
 
@@ -62,8 +79,6 @@ namespace BookHive.Controllers
         // ── REGISTRATION ───────────────────────────
         public IActionResult Registration()
         {
-            if (HttpContext.Session.GetString("MISUser") == null)
-                return RedirectToAction("Login");
             return View();
         }
 
@@ -71,13 +86,11 @@ namespace BookHive.Controllers
         public async Task<IActionResult> Registration(
             string role, string studId, string empId,
             string lastName, string firstName,
-            string email, string phone,
-            string rfid, string department)
+            string email, string rfid, string department)
         {
-            if (HttpContext.Session.GetString("MISUser") == null)
-                return RedirectToAction("Login");
+            var existing = await _db.Users
+                .FirstOrDefaultAsync(u => u.Email == email);
 
-            var existing = await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
             if (existing != null)
             {
                 ViewBag.Error = "A user with this email already exists.";
@@ -92,7 +105,6 @@ namespace BookHive.Controllers
                 LastName = lastName,
                 FirstName = firstName,
                 Email = email,
-                Phone = phone,
                 RFIDCard = rfid,
                 Department = department,
                 Status = "Active"
@@ -102,21 +114,24 @@ namespace BookHive.Controllers
             await _db.SaveChangesAsync();
 
             ViewBag.Success =
-                $"{role} account for {firstName} {lastName} registered successfully!";
+                $"{role} account for {firstName} {lastName} " +
+                $"registered successfully!";
+
             return View();
         }
 
         // ── USER INFORMATION (LIST + DETAIL) ───────
         public async Task<IActionResult> UserInfo(int? id)
         {
-            if (HttpContext.Session.GetString("MISUser") == null)
-                return RedirectToAction("Login");
-
             if (id == null)
             {
                 var users = await _db.Users
                     .Where(u => u.Status != "Archived")
                     .ToListAsync();
+                var archived = await _db.Users
+                    .Where(u => u.Status == "Archived")
+                    .ToListAsync();
+                ViewBag.ArchivedUsers = archived;
                 return View("UserInfoList", users);
             }
 
@@ -127,12 +142,9 @@ namespace BookHive.Controllers
             return View("UserInfoDetail", user);
         }
 
-        // ── ARCHIVE LIST PAGE ───────────────────────
+        // ── ARCHIVED USERS ─────────────────────────
         public async Task<IActionResult> ArchivedUsers()
         {
-            if (HttpContext.Session.GetString("MISUser") == null)
-                return RedirectToAction("Login");
-
             var archived = await _db.Users
                 .Where(u => u.Status == "Archived")
                 .ToListAsync();
@@ -144,15 +156,13 @@ namespace BookHive.Controllers
         [HttpPost]
         public async Task<IActionResult> ArchiveUser(int id)
         {
-            if (HttpContext.Session.GetString("MISUser") == null)
-                return RedirectToAction("Login");
-
             var user = await _db.Users.FindAsync(id);
             if (user != null)
             {
                 user.Status = "Archived";
                 await _db.SaveChangesAsync();
             }
+
             return RedirectToAction("UserInfo");
         }
 
@@ -160,15 +170,13 @@ namespace BookHive.Controllers
         [HttpPost]
         public async Task<IActionResult> RestoreUser(int id)
         {
-            if (HttpContext.Session.GetString("MISUser") == null)
-                return RedirectToAction("Login");
-
             var user = await _db.Users.FindAsync(id);
             if (user != null)
             {
                 user.Status = "Active";
                 await _db.SaveChangesAsync();
             }
+
             return RedirectToAction("ArchivedUsers");
         }
 
@@ -176,24 +184,35 @@ namespace BookHive.Controllers
         [HttpPost]
         public async Task<IActionResult> ResetPassword(int id, string newPassword)
         {
-            if (HttpContext.Session.GetString("MISUser") == null)
-                return RedirectToAction("Login");
-
             var user = await _db.Users.FindAsync(id);
             if (user != null)
             {
                 user.Password = newPassword;
                 await _db.SaveChangesAsync();
-                TempData["Toast"] = $"Password reset successfully for {user.FullName}.";
+                TempData["Toast"] =
+                    $"Password reset successfully for {user.FullName}.";
             }
 
             return RedirectToAction("UserInfo", new { id });
         }
 
-        // ── LOGOUT ─────────────────────────────────
+        [AllowMISAnonymous]
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
+
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                return SignOut(
+                    new Microsoft.AspNetCore.Authentication.AuthenticationProperties
+                    {
+                        RedirectUri = "/MIS/Login"
+                    },
+                    "Cookies",
+                    "OpenIdConnect"
+                );
+            }
+
             return RedirectToAction("Login");
         }
     }

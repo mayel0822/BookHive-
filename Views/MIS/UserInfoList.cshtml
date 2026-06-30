@@ -33,14 +33,22 @@
                    class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] font-medium text-[#B0C4DE] hover:bg-white/10 hover:text-white transition-colors">
                     <span class="text-base">&#43;</span> Registration
                 </a>
-                <a href="/MIS/UserInfo"
-                   class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] font-bold text-white bg-white/15">
-                    <span class="text-base">&#128100;</span> User Information
-                </a>
-                <a href="/MIS/ArchivedUsers"
-                   class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] font-medium text-[#B0C4DE] hover:bg-white/10 hover:text-white transition-colors">
-                    <span class="text-base">&#128452;</span> Archived Users
-                </a>
+                <div>
+                    <div class="flex items-center rounded-lg bg-white/15">
+                        <a href="/MIS/UserInfo" style="color:#fff;text-decoration:none;display:flex;align-items:center;gap:10px;flex:1;padding:10px 12px;font-size:13px;font-weight:700;">
+                            <span style="font-size:15px;">&#128100;</span> User Information
+                        </a>
+                        <button onclick="toggleUserMenu()" style="background:none;border:none;cursor:pointer;color:#fff;padding:10px 8px;">
+                            <svg id="userMenuArrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 0.2s;display:block;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </button>
+                    </div>
+                    <div id="userSubMenu" style="display:none" class="flex flex-col mt-0.5 pl-4">
+                        <a href="/MIS/ArchivedUsers"
+                           class="flex items-center gap-2 px-3 py-2 rounded-lg text-[12px] font-medium text-[#B0C4DE] hover:bg-white/10 hover:text-white transition-colors">
+                            <span>&#128452;</span> Archived Users
+                        </a>
+                    </div>
+                </div>
             </nav>
             <a href="/MIS/Logout"
                class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] text-[#90A4AE] hover:bg-white/[0.07] transition-colors">
@@ -93,11 +101,7 @@
                                 class="filter-btn bg-transparent border border-slate-200 rounded-full px-3.5 py-1 text-[11px] font-semibold text-slate-500 hover:border-[#1B2B5E] hover:text-[#1B2B5E] transition-colors">
                             Student
                         </button>
-                        <button onclick="filterRole(this, 'Librarian')"
-                                class="filter-btn bg-transparent border border-slate-200 rounded-full px-3.5 py-1 text-[11px] font-semibold text-slate-500 hover:border-[#1B2B5E] hover:text-[#1B2B5E] transition-colors">
-                            Librarian
-                        </button>
-                        <button onclick="filterRole(this, 'Professor')"
+<button onclick="filterRole(this, 'Professor')"
                                 class="filter-btn bg-transparent border border-slate-200 rounded-full px-3.5 py-1 text-[11px] font-semibold text-slate-500 hover:border-[#1B2B5E] hover:text-[#1B2B5E] transition-colors">
                             Professor
                         </button>
@@ -127,7 +131,6 @@
                                         <td class="px-3.5 py-2.5">
                                             @{
                                                 var roleBg = user.Role == "Student" ? "bg-blue-100 text-blue-700"
-                                                : user.Role == "Librarian" ? "bg-emerald-100 text-emerald-800"
                                                 : "bg-amber-100 text-amber-800";
                                             }
                                             <span class="@roleBg rounded-full px-2.5 py-0.5 text-[11px] font-semibold">@user.Role</span>
@@ -148,7 +151,86 @@
                             </tbody>
                         </table>
                     </div>
+                </div>
 
+                @* Archived Users Collapsible *@
+                <div class="bg-white rounded-[10px] border border-slate-200 overflow-hidden mt-5">
+                    <button onclick="toggleArchived()"
+                            class="w-full px-5 py-3.5 flex justify-between items-center text-left hover:bg-slate-50 transition-colors">
+                        <span class="text-base font-bold text-slate-500">
+                            &#128452; Archived Users
+                            <span class="ml-2 text-[11px] font-semibold bg-slate-100 text-slate-500 rounded-full px-2 py-0.5">
+                                @((ViewBag.ArchivedUsers as List<BookHive.Models.User>)?.Count ?? 0)
+                            </span>
+                        </span>
+                        <span id="archivedArrow" class="text-slate-400 text-lg transition-transform duration-200">&#8964;</span>
+                    </button>
+
+                    <div id="archivedSection" class="hidden overflow-x-auto border-t border-slate-100">
+                        @{
+                            var archivedList = ViewBag.ArchivedUsers as List<BookHive.Models.User> ?? new();
+                        }
+                        @if (!archivedList.Any())
+                        {
+                            <p class="text-center text-xs text-slate-400 py-6">No archived users.</p>
+                        }
+                        else
+                        {
+                            <table class="w-full border-collapse text-xs">
+                                <thead>
+                                    <tr class="bg-slate-200">
+                                        <th class="px-3.5 py-2.5 text-slate-600 text-left font-semibold text-[11px] whitespace-nowrap">ID / Emp. No.</th>
+                                        <th class="px-3.5 py-2.5 text-slate-600 text-left font-semibold text-[11px] whitespace-nowrap">Last Name</th>
+                                        <th class="px-3.5 py-2.5 text-slate-600 text-left font-semibold text-[11px] whitespace-nowrap">First Name</th>
+                                        <th class="px-3.5 py-2.5 text-slate-600 text-left font-semibold text-[11px] whitespace-nowrap">Role</th>
+                                        <th class="px-3.5 py-2.5 text-slate-600 text-left font-semibold text-[11px] whitespace-nowrap">Email</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var user in archivedList)
+                                    {
+                                        <tr class="even:bg-slate-50 border-b border-slate-100 last:border-b-0">
+                                            <td class="px-3.5 py-2.5 text-slate-400 whitespace-nowrap">@(user.StudId ?? user.EmpId)</td>
+                                            <td class="px-3.5 py-2.5 text-slate-400">@user.LastName</td>
+                                            <td class="px-3.5 py-2.5 text-slate-400">@user.FirstName</td>
+                                            <td class="px-3.5 py-2.5">
+                                                @{
+                                                    var roleBg = user.Role == "Student" ? "bg-blue-50 text-blue-400"
+                                                    : "bg-amber-50 text-amber-400";
+                                                }
+                                                <span class="@roleBg rounded-full px-2.5 py-0.5 text-[11px] font-semibold">@user.Role</span>
+                                            </td>
+                                            <td class="px-3.5 py-2.5 text-slate-400 whitespace-nowrap">@user.Email</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <script>
+        function toggleArchived() {
+            const section = document.getElementById('archivedSection');
+            const arrow = document.getElementById('archivedArrow');
+            const isHidden = section.classList.contains('hidden');
+            section.classList.toggle('hidden', !isHidden);
+            arrow.style.transform = isHidden ? 'rotate(180deg)' : '';
+        }
+    </script>
     <script src="~/js/mis-dashboard.js"></script>
+    <script>
+        function toggleUserMenu() {
+            const menu = document.getElementById('userSubMenu');
+            const arrow = document.getElementById('userMenuArrow');
+            const isHidden = menu.style.display === 'none';
+            menu.style.display = isHidden ? 'flex' : 'none';
+            arrow.style.transform = isHidden ? 'rotate(180deg)' : '';
+        }
+    </script>
 </body>
 </html>
